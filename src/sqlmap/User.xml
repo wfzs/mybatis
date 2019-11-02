@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace：命名空间，用于隔离sql，还有一个很重要的作用，后面会讲 -->
+<mapper namespace="cn.itheima.mybatis.mapper.UserMapper">
+	<select id="findUserById" parameterType="Integer" resultType="cn.itheima.mybatis.pojo.User">
+		select * from user where id = #{id}
+	</select>
+	<select id="findUserByUsername" parameterType="String" resultType="cn.itheima.mybatis.pojo.User">
+		<!-- select * from user where username like '%${value}%' -->
+		select * from user where username like "%"#{username}"%"		
+	</select>
+	<insert id="insertUser" parameterType="cn.itheima.mybatis.pojo.User">
+		<selectKey keyProperty="id" resultType="Integer" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into user (username,birthday,sex,address)
+		values (#{username},#{birthday},#{sex},#{address})
+	</insert>
+	<update id="updateUserById" parameterType="cn.itheima.mybatis.pojo.User">
+		update user
+		set username = #{username},birthday = #{birthday},sex = #{sex},address = #{address} where id = #{id}
+	</update>
+</mapper>
